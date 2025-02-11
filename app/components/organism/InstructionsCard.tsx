@@ -1,4 +1,7 @@
-import { useState, ChangeEvent } from "react";
+import { ChangeEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setMotion, setLimit } from "@/app/store/features/debate/debateSlice";
+import { RootState } from "@/app/store/store";
 import {
   Card,
   CardHeader,
@@ -11,8 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export default function InstructionsCard() {
-  const [motion, setMotion] = useState("");
-  const [limit, setLimit] = useState<string>("");
+  const dispatch = useDispatch();
+  const { motion, limit } = useSelector((state: RootState) => state.debate);
 
   return (
     <Card>
@@ -27,7 +30,7 @@ export default function InstructionsCard() {
             type="text"
             value={motion}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setMotion(e.target.value)
+              dispatch(setMotion(e.target.value))
             }
             placeholder="「〇〇すべき、であるべき」のような肯定系の文にしてください"
           />
@@ -38,7 +41,7 @@ export default function InstructionsCard() {
             type="number"
             value={limit}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setLimit(e.target.value)
+              dispatch(setLimit(e.target.value))
             }
             placeholder="制限時間を入力してください"
           />
