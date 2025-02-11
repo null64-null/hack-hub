@@ -1,5 +1,10 @@
 import React from "react";
+import InstructionsCard from "../organism/InstructionsCard";
 
 export default function DebatePage() {
-  return <div>DebatePage</div>;
+  return (
+    <div>
+      <InstructionsCard />
+    </div>
+  );
 }

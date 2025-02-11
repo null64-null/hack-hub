@@ -1,3 +1,5 @@
+"use client";
+
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setMotion, setLimit } from "@/app/store/features/debate/debateSlice";
@@ -18,7 +20,7 @@ export default function InstructionsCard() {
   const { motion, limit } = useSelector((state: RootState) => state.debate);
 
   return (
-    <Card>
+    <Card className="w-[600px]">
       <CardHeader>
         <CardTitle>ディベートの設定</CardTitle>
         <CardDescription>議題と制限時間を設定してください</CardDescription>
@@ -46,8 +48,10 @@ export default function InstructionsCard() {
             placeholder="制限時間を入力してください"
           />
         </div>
-        <Button className="w-full">始める</Button>
       </CardContent>
+      <div className="p-6">
+        <Button className="w-full">始める</Button>
+      </div>
     </Card>
   );
 }
