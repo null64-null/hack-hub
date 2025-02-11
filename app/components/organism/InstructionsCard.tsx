@@ -2,7 +2,11 @@
 
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setMotion, setLimit } from "@/app/store/features/debate/debateSlice";
+import {
+  setMotion,
+  setLimit,
+  setProcess,
+} from "@/app/store/features/debate/debateSlice";
 import { RootState } from "@/app/store/store";
 import {
   Card,
@@ -43,14 +47,19 @@ export default function InstructionsCard() {
             type="number"
             value={limit}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              dispatch(setLimit(e.target.value))
+              dispatch(setLimit(Number(e.target.value)))
             }
             placeholder="制限時間を入力してください"
           />
         </div>
       </CardContent>
       <div className="p-6">
-        <Button className="w-full">始める</Button>
+        <Button
+          onClick={() => dispatch(setProcess("inProgress"))}
+          className="w-full"
+        >
+          始める
+        </Button>
       </div>
     </Card>
   );

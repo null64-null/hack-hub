@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DebateState {
   motion: string;
-  limit: string;
+  limit: number;
+  process: string;
 }
 
 const initialState: DebateState = {
   motion: "",
-  limit: "",
+  limit: 300,
+  process: "before",
 };
 
 export const debateSlice = createSlice({
@@ -17,11 +19,14 @@ export const debateSlice = createSlice({
     setMotion: (state, action: PayloadAction<string>) => {
       state.motion = action.payload;
     },
-    setLimit: (state, action: PayloadAction<string>) => {
+    setLimit: (state, action: PayloadAction<number>) => {
       state.limit = action.payload;
+    },
+    setProcess: (state, action: PayloadAction<string>) => {
+      state.process = action.payload;
     },
   },
 });
 
-export const { setMotion, setLimit } = debateSlice.actions;
+export const { setMotion, setLimit, setProcess } = debateSlice.actions;
 export default debateSlice.reducer;
