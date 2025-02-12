@@ -1,15 +1,16 @@
 "use client";
 
 import React from "react";
-import InstructionsCard from "../organism/InstructionsCard";
-import DebatingSign from "../organism/debatingSign";
+import InstructionsCard from "@/app/components/organisms/InstructionsCard";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
+import ResultDisplay from "@/app/components/organisms/ResultDisplay";
+import Loading from "@/app/components/organisms/Loading";
 
 export default function DebatePage() {
-  const { process } = useSelector((state: RootState) => state.debate);
+  const { process, result } = useSelector((state: RootState) => state.debate);
   return (
-    <div>
+    <div className="w-full flex flex-col items-center">
       {process === "before" && (
         <div className="flex justify-center items-center h-screen">
           <div className="text-4xl font-bold text-primary mx-16">
@@ -20,14 +21,12 @@ export default function DebatePage() {
       )}
       {process === "inProgress" && (
         <div className="flex justify-center items-center h-screen">
-          <DebatingSign />
+          <Loading />
         </div>
       )}
       {process === "completed" && (
-        <div className="flex justify-center items-center h-screen">
-          <div className="text-4xl font-bold text-primary mx-16">
-            ディベートが終了しました
-          </div>
+        <div className="w-[1000px]">
+          <ResultDisplay result={result} />
         </div>
       )}
     </div>
