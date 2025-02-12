@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import ResultDisplay from "@/app/components/organisms/ResultDisplay";
 import Loading from "@/app/components/organisms/Loading";
+import Failed from "@/app/components/organisms/Failed";
 
 export default function DebatePage() {
   const { process, result } = useSelector((state: RootState) => state.debate);
@@ -24,8 +25,13 @@ export default function DebatePage() {
           <Loading />
         </div>
       )}
+      {process === "failed" && (
+        <div className="flex justify-center items-center h-screen">
+          <Failed />
+        </div>
+      )}
       {process === "completed" && (
-        <div className="w-[1000px]">
+        <div className="w-[1000px] mt-16 mb-16">
           <ResultDisplay result={result} />
         </div>
       )}
