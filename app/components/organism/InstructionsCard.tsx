@@ -6,6 +6,7 @@ import {
   setMotion,
   setLimit,
   setProcess,
+  setResult,
 } from "@/app/store/features/debate/debateSlice";
 import { RootState } from "@/app/store/store";
 import {
@@ -55,7 +56,17 @@ export default function InstructionsCard() {
       </CardContent>
       <div className="p-6">
         <Button
-          onClick={() => dispatch(setProcess("inProgress"))}
+          onClick={async () => {
+            dispatch(setProcess("inProgress"));
+            const response = await fetch("/api/debate", {
+              method: "POST",
+              body: JSON.stringify({ motion, limit }),
+            });
+            const result = await response.json();
+            console.log(result);
+            dispatch(setResult(result));
+            dispatch(setProcess("completed"));
+          }}
           className="w-full"
         >
           始める

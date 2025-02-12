@@ -23,6 +23,13 @@ export default function DebatePage() {
           <DebatingSign />
         </div>
       )}
+      {process === "completed" && (
+        <div className="flex justify-center items-center h-screen">
+          <div className="text-4xl font-bold text-primary mx-16">
+            ディベートが終了しました
+          </div>
+        </div>
+      )}
     </div>
   );
 }
