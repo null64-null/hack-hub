@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         `Dify API error: ${response.status} ${response.statusText}`
       );
     }
-    console.log(responseData);
+
     const result: DebateResult = {
       govArgument: "",
       oppArgument: "",
@@ -45,27 +45,63 @@ export async function POST(request: Request) {
       oppSummary: "",
       judge: "",
     };
+
     if (responseData.data && responseData.data.outputs) {
       if (responseData.data.outputs.gov_argument) {
         result.govArgument = responseData.data.outputs.gov_argument;
+      } else {
+        return Response.json(
+          { error: "falil to fetch arguments" },
+          { status: 500 }
+        );
       }
       if (responseData.data.outputs.opp_argument) {
         result.oppArgument = responseData.data.outputs.opp_argument;
+      } else {
+        return Response.json(
+          { error: "falil to fetch arguments" },
+          { status: 500 }
+        );
       }
       if (responseData.data.outputs.gov_rebuttal) {
         result.govRebuttal = responseData.data.outputs.gov_rebuttal;
+      } else {
+        return Response.json(
+          { error: "falil to fetch arguments" },
+          { status: 500 }
+        );
       }
       if (responseData.data.outputs.opp_rebuttal) {
         result.oppRebuttal = responseData.data.outputs.opp_rebuttal;
+      } else {
+        return Response.json(
+          { error: "falil to fetch arguments" },
+          { status: 500 }
+        );
       }
       if (responseData.data.outputs.gov_summary) {
         result.govSummary = responseData.data.outputs.gov_summary;
+      } else {
+        return Response.json(
+          { error: "falil to fetch arguments" },
+          { status: 500 }
+        );
       }
       if (responseData.data.outputs.opp_summary) {
         result.oppSummary = responseData.data.outputs.opp_summary;
+      } else {
+        return Response.json(
+          { error: "falil to fetch arguments" },
+          { status: 500 }
+        );
       }
       if (responseData.data.outputs.judge) {
         result.judge = responseData.data.outputs.judge;
+      } else {
+        return Response.json(
+          { error: "falil to fetch arguments" },
+          { status: 500 }
+        );
       }
     }
 

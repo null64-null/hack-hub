@@ -24,6 +24,30 @@ export default function InstructionsCard() {
   const dispatch = useDispatch();
   const { motion, limit } = useSelector((state: RootState) => state.debate);
 
+  const handleClick = async () => {
+    dispatch(setProcess("inProgress"));
+
+    try {
+      const response = await fetch("/api/debate", {
+        method: "POST",
+        body: JSON.stringify({ motion, limit }),
+      });
+
+      if (!response.ok) {
+        dispatch(setProcess("failed"));
+        return;
+      }
+
+      const result = await response.json();
+
+      dispatch(setResult(result));
+      dispatch(setProcess("completed"));
+    } catch (error: unknown) {
+      console.log(error);
+      dispatch(setProcess("failed"));
+    }
+  };
+
   return (
     <Card className="w-[600px]">
       <CardHeader>
@@ -55,20 +79,7 @@ export default function InstructionsCard() {
         </div>
       </CardContent>
       <div className="p-6">
-        <Button
-          onClick={async () => {
-            dispatch(setProcess("inProgress"));
-            const response = await fetch("/api/debate", {
-              method: "POST",
-              body: JSON.stringify({ motion, limit }),
-            });
-            const result = await response.json();
-            console.log(result);
-            dispatch(setResult(result));
-            dispatch(setProcess("completed"));
-          }}
-          className="w-full"
-        >
+        <Button onClick={handleClick} className="w-full">
           始める
         </Button>
       </div>
