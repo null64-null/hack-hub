@@ -1,4 +1,4 @@
-import DebatePage from "./components/pages/DebatePage";
+import DebatePage from "@/app/components/pages/DebatePage";
 
 export default function Home() {
   return (
