@@ -4,10 +4,11 @@ import ReactMarkdown from "react-markdown";
 type Props = {
   text: string;
   title: string;
+  width?: number;
 };
-export default function ArgumentCard({ text, title }: Props) {
+export default function ArgumentCard({ text, title, width }: Props) {
   return (
-    <Card className="w-[500px]">
+    <Card style={{ width: width ?? 500 }}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
