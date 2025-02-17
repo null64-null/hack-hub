@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setProcess } from "@/app/store/features/debate/debateSlice";
+import { useSetAtom } from "jotai";
+import { processAtom } from "@/app/atoms";
 
 export default function Failed() {
-  const dispatch = useDispatch();
+  const setProcess = useSetAtom(processAtom);
 
   return (
     <div className="flex flex-col items-center justify-center gap-10 ">
@@ -17,7 +17,7 @@ export default function Failed() {
         <Button
           variant="outline"
           onClick={() => {
-            dispatch(setProcess("before"));
+            setProcess("before");
           }}
         >
           もう一度実行する

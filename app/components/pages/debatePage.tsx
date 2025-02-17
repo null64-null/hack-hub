@@ -2,15 +2,14 @@
 
 import React from "react";
 import InstructionsCard from "@/app/components/organisms/InstructionsCard";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
+import { useAtomValue } from "jotai";
+import { processAtom } from "@/app/atoms";
 import ResultDisplay from "@/app/components/organisms/ResultDisplay";
-import Loading from "@/app/components/organisms/Loading";
 import Failed from "@/app/components/organisms/Failed";
-//import { sampleDebateResult } from "../atoms/dummy";
 
 export default function DebatePage() {
-  const { process, result } = useSelector((state: RootState) => state.debate);
+  const process = useAtomValue(processAtom);
+
   return (
     <div className="w-full flex flex-col items-center">
       {process === "before" && (
@@ -21,32 +20,16 @@ export default function DebatePage() {
           <InstructionsCard />
         </div>
       )}
-      {process === "inProgress" && (
-        <div className="flex justify-center items-center h-screen">
-          <Loading />
+      {(process === "inProcess" || process === "finish") && (
+        <div className="w-[1000px] mt-16 mb-16">
+          <ResultDisplay />
         </div>
       )}
-      {process === "failed" && (
+      {process === "error" && (
         <div className="flex justify-center items-center h-screen">
           <Failed />
         </div>
       )}
-      {process === "completed" && (
-        <div className="w-[1000px] mt-16 mb-16">
-          <ResultDisplay result={result} />
-        </div>
-      )}
-      {/* 検証用 dummy result */}
-      {/*process === "failed" && (
-        <div className="flex flex-col items-center mt-10">
-          <div className="text-4xl font-bold text-primary mx-16">
-            ディベート結果
-          </div>
-          <div className="w-[1000px] mt-16 mb-16">
-            <ResultDisplay result={sampleDebateResult} />
-          </div>
-        </div>
-      )*/}
     </div>
   );
 }

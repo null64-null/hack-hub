@@ -1,19 +1,20 @@
+import { Arg } from "@/app/types";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
 
 type Props = {
-  text: string;
-  title: string;
+  arg: Arg;
   width?: number;
 };
-export default function ArgumentCard({ text, title, width }: Props) {
+
+export default function ArgumentCard({ arg, width }: Props) {
   return (
     <Card style={{ width: width ?? 500 }}>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>{arg.title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ReactMarkdown className="prose prose-sm">{text}</ReactMarkdown>
+        <ReactMarkdown className="prose prose-sm">{arg.content}</ReactMarkdown>
       </CardContent>
     </Card>
   );
