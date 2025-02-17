@@ -15,7 +15,7 @@ export const useDebateProcess = () => {
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const validate = () => {
-    if (motion === "" && limit > 100) {
+    if (motion !== "" && limit > 100) {
       setSendable(true);
     } else {
       setSendable(false);

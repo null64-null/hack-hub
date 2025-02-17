@@ -51,12 +51,17 @@ export default function ResultDisplay() {
           ホームに戻る
         </Button>
       )}
-      {process === "error" ||
-        (process === "abort" && (
+      {(process === "error" || process === "abort") && (
+        <div className="flex flex-col items-center">
+          <div className="text-base font-bold text-primary">
+            {process === "error" && "ディベートに失敗しました"}
+            {process === "abort" && "ディベートを中止しました"}
+          </div>
           <Button variant="outline" onClick={initializeDebateProcessAfterError}>
             もう一度ディベートを行う
           </Button>
-        ))}
+        </div>
+      )}
     </div>
   );
 }
