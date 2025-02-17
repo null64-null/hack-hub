@@ -57,7 +57,7 @@ export const useDebateProcess = () => {
         const requestBody = {
           motion: motion,
           limit: limit,
-          history: args,
+          args: args,
         };
 
         const requestHeaders = {
