@@ -23,7 +23,7 @@ export default function InstructionsCard() {
     <Card className="w-[600px]">
       <CardHeader>
         <CardTitle>ディベートの設定</CardTitle>
-        <CardDescription>議題と制限時間を設定してください</CardDescription>
+        <CardDescription>議題と制限文字数を設定してください</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
