@@ -14,24 +14,12 @@ export const useDebateProcess = () => {
   const [sendable, setSendable] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const validate = () => {
+  const validate = (motion: string, limit: number) => {
     if (motion !== "" && limit > 100) {
       setSendable(true);
     } else {
       setSendable(false);
     }
-  };
-
-  const editMotion = (e: ChangeEvent<HTMLInputElement>) => {
-    const newMotion = e.target.value;
-    setDebate({ ...debate, motion: newMotion });
-    validate();
-  };
-
-  const editLimit = (e: ChangeEvent<HTMLInputElement>) => {
-    const newLimit = Number(e.target.value);
-    setDebate({ ...debate, limit: newLimit });
-    validate();
   };
 
   const setDebateByStream = (accumulatedText: string) => {
@@ -45,6 +33,18 @@ export const useDebateProcess = () => {
         },
       ],
     });
+  };
+
+  const editMotion = (e: ChangeEvent<HTMLInputElement>) => {
+    const newMotion = e.target.value;
+    setDebate({ ...debate, motion: newMotion });
+    validate(newMotion, limit);
+  };
+
+  const editLimit = (e: ChangeEvent<HTMLInputElement>) => {
+    const newLimit = Number(e.target.value);
+    setDebate({ ...debate, limit: newLimit });
+    validate(motion, newLimit);
   };
 
   const runDebateProcess = async () => {
