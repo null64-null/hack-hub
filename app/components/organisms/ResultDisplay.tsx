@@ -30,7 +30,7 @@ export default function ResultDisplay() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-10">
+    <div className="w-full flex flex-col items-center gap-10">
       {args.map((arg, index) => (
         <SlideIn
           position={position(index)}
@@ -42,12 +42,16 @@ export default function ResultDisplay() {
         </SlideIn>
       ))}
       {process === "inProcess" && (
-        <Button variant="outline" onClick={cancelDebate}>
+        <Button variant="outline" onClick={cancelDebate} className="w-60">
           ディベートを中止
         </Button>
       )}
       {process === "finish" && (
-        <Button variant="outline" onClick={initializeDebateProcess}>
+        <Button
+          variant="outline"
+          onClick={initializeDebateProcess}
+          className="w-60"
+        >
           ホームに戻る
         </Button>
       )}
@@ -57,7 +61,11 @@ export default function ResultDisplay() {
             {process === "error" && "ディベートに失敗しました"}
             {process === "abort" && "ディベートを中止しました"}
           </div>
-          <Button variant="outline" onClick={initializeDebateProcessAfterError}>
+          <Button
+            variant="outline"
+            onClick={initializeDebateProcessAfterError}
+            className="w-60"
+          >
             もう一度ディベートを行う
           </Button>
         </div>
