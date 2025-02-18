@@ -1,12 +1,11 @@
 "use client";
 
 import React from "react";
-import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import ArgumentCard from "@/app/components/atoms/ArgumentCard";
 import { useAtomValue } from "jotai";
 import { debateAtom, processAtom } from "@/app/atoms";
-import { useDebateProcess, useAnimationStart } from "@/app/hooks";
+import { useDebateProcess } from "@/app/hooks";
 import { argIds } from "@/app/values";
 
 export default function ResultDisplay() {
@@ -17,29 +16,27 @@ export default function ResultDisplay() {
     initializeDebateProcessAfterError,
     cancelDebate,
   } = useDebateProcess();
-  const { move } = useAnimationStart();
 
-  const position = (index: number) => {
+  const style = (index: number) => {
     if (index === argIds.length - 1) {
-      return "center";
+      return { marginTop: 40, justifyContent: "center" };
     } else if (index % 2 === 0) {
-      return "start";
+      return { marginLeft: 40, justifyContent: "start" };
     } else {
-      return "end";
+      return { marginRight: 40, justifyContent: "end" };
     }
   };
 
   return (
     <div className="w-full flex flex-col items-center gap-10">
       {args.map((arg, index) => (
-        <SlideIn
-          position={position(index)}
-          isNew={index === args.length - 1}
-          move={move}
-          key={arg.title}
+        <div
+          style={style(index)}
+          className="w-full flex"
+          key={`${arg.title}${index}`}
         >
           <ArgumentCard arg={arg} />
-        </SlideIn>
+        </div>
       ))}
       {process === "inProcess" && (
         <Button variant="outline" onClick={cancelDebate} className="w-60">
@@ -70,47 +67,6 @@ export default function ResultDisplay() {
           </Button>
         </div>
       )}
-    </div>
-  );
-}
-
-type Props = {
-  position: "start" | "end" | "center";
-  isNew: boolean;
-  move: boolean;
-  children: ReactNode;
-};
-
-function SlideIn({ position, isNew, move, children }: Props) {
-  let margin;
-  const opacity = move ? 1 : 0;
-  let transform;
-  if (position === "start") {
-    margin = "ml";
-    transform = move ? "translateX(0px)" : "translateX(-20px)";
-  } else if (position === "end") {
-    margin = "mr";
-    transform = move ? "translateX(0px)" : "translateX(20px)";
-  } else {
-    margin = "mt";
-    transform = move ? "translateY(0px)" : "translateY(20px)";
-  }
-
-  return (
-    <div className={`w-full ${margin}-10 flex justify-${position}`}>
-      <div
-        className="ease-out duration-500"
-        style={
-          isNew
-            ? {
-                opacity: opacity,
-                transform: transform,
-              }
-            : {}
-        }
-      >
-        {children}
-      </div>
     </div>
   );
 }

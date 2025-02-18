@@ -9,7 +9,7 @@ import { useRef } from "react";
 
 export const useDebateProcess = () => {
   const [debate, setDebate] = useAtom(debateAtom);
-  const { motion, limit, args } = debate;
+  const { motion, limit } = debate;
   const setProcess = useSetAtom(processAtom);
   const [sendable, setSendable] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -20,19 +20,6 @@ export const useDebateProcess = () => {
     } else {
       setSendable(false);
     }
-  };
-
-  const setDebateByStream = (accumulatedText: string) => {
-    setDebate({
-      ...debate,
-      args: [
-        ...args.slice(0, -1),
-        {
-          ...args.at(-1)!,
-          content: accumulatedText,
-        },
-      ],
-    });
   };
 
   const editMotion = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,12 +39,14 @@ export const useDebateProcess = () => {
     setDebate({ ...debate, args: [] as Arg[] });
     abortControllerRef.current = new AbortController();
 
+    let newArgs: Arg[] = [] as Arg[];
+
     try {
       for (let i = 0; i < argIds.length; i++) {
         const requestBody = {
           motion: motion,
           limit: limit,
-          args: args,
+          args: newArgs,
         };
 
         const requestHeaders = {
@@ -78,10 +67,8 @@ export const useDebateProcess = () => {
           return;
         }
 
-        setDebate({
-          ...debate,
-          args: [...args, { title: argIds[i].title, content: "" }],
-        });
+        newArgs = [...newArgs, { title: argIds[i].title, content: "" }];
+        setDebate({ ...debate, args: newArgs });
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
@@ -91,7 +78,14 @@ export const useDebateProcess = () => {
           const { done, value } = await reader.read();
           if (done) break;
           accumulatedText += decoder.decode(value, { stream: true });
-          setDebateByStream(accumulatedText);
+          newArgs = [
+            ...newArgs.slice(0, -1),
+            {
+              ...newArgs.at(-1)!,
+              content: accumulatedText,
+            },
+          ];
+          setDebate({ ...debate, args: newArgs });
         }
       }
 
