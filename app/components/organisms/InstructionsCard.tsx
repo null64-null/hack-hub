@@ -20,8 +20,6 @@ export default function InstructionsCard() {
     useDebateProcess();
   const { motion, limit } = useAtomValue(debateAtom);
 
-  console.log(limit);
-
   return (
     <Card className="w-[600px]">
       <CardHeader>
