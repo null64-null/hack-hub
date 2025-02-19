@@ -1,4 +1,4 @@
-import { Arg } from "@/app/types";
+import { Arg } from "@/app/types/types";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
 

@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { Debate, Arg, Process } from "@/app/types";
+import { Debate, Arg, Process } from "@/app/types/types";
 
 export const debateAtom = atom<Debate>({
   motion: "",

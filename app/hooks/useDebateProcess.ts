@@ -1,10 +1,10 @@
 "use client";
 
-import { Arg } from "@/app/types";
+import { Arg } from "@/app/types/types";
 import { ChangeEvent, useState, useEffect } from "react";
 import { useAtom, useSetAtom } from "jotai";
-import { debateAtom, processAtom } from "@/app/atoms";
-import { argIds } from "@/app/values";
+import { debateAtom, processAtom } from "@/app/atoms/atoms";
+import { argIds } from "@/app/utils/values";
 import { useRef } from "react";
 
 export const useDebateProcess = () => {
@@ -13,9 +13,24 @@ export const useDebateProcess = () => {
   const setProcess = useSetAtom(processAtom);
   const [sendable, setSendable] = useState<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const [formMessage, setFormMessage] = useState<string>("");
 
-  const validate = (motion: string, limit: number) => {
-    if (motion !== "" && limit > 100) {
+  useEffect(() => {
+    validate(motion);
+  }, []);
+
+  const manageValidationMessage = (motion: string) => {
+    if (motion.length === 0) {
+      setFormMessage("議題を入力してください");
+    } else if (motion.length > 100) {
+      setFormMessage("100文字未満で入力してください");
+    } else {
+      setFormMessage("");
+    }
+  };
+
+  const validate = (motion: string) => {
+    if (motion.length > 0 && motion.length <= 100) {
       setSendable(true);
     } else {
       setSendable(false);
@@ -25,13 +40,12 @@ export const useDebateProcess = () => {
   const editMotion = (e: ChangeEvent<HTMLInputElement>) => {
     const newMotion = e.target.value;
     setDebate({ ...debate, motion: newMotion });
-    validate(newMotion, limit);
+    validate(newMotion);
+    manageValidationMessage(newMotion);
   };
 
-  const editLimit = (e: ChangeEvent<HTMLInputElement>) => {
-    const newLimit = Number(e.target.value);
+  const editLimit = (newLimit: number) => {
     setDebate({ ...debate, limit: newLimit });
-    validate(motion, newLimit);
   };
 
   const runDebateProcess = async () => {
@@ -123,29 +137,6 @@ export const useDebateProcess = () => {
     initializeDebateProcessAfterError,
     cancelDebate,
     sendable,
+    formMessage,
   };
-};
-
-export const useTimer = () => {
-  const [time, setTime] = useState<number>(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime((prev) => prev + 100);
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return { time };
-};
-
-export const useAnimationStart = () => {
-  const [move, setMove] = useState<boolean>(false);
-
-  useEffect(() => {
-    setMove(true);
-  }, []);
-
-  return { move };
 };

@@ -7,3 +7,5 @@ export const argIds = [
   { id: "opp_summary", title: "反対側まとめ" },
   { id: "judge", title: "判定" },
 ];
+
+export const limitOptions = [100, 200, 300, 400, 500];
