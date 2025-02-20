@@ -44,3 +44,5 @@ next-env.d.ts
 
 #wrangler
 wranglar.toml
+wranglar.json
+wranglar.jsonc
