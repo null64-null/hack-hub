@@ -44,8 +44,10 @@ export default function InstructionsCard() {
           <div className="flex justify-around">
             {limitOptions.map((limitOption, index) => (
               <Button
-                className={`bg-slate-700 ${
-                  limitOption === limit ? "outline outline-red-600" : ""
+                className={`transition-all border-2 rounded-lg px-4 py-2 ${
+                  limitOption === limit
+                    ? "border-gray-900 bg-gray-300 text-gray-900 font-bold shadow-lg hover:bg-gray-400"
+                    : "border-gray-400 bg-white text-gray-700 hover:bg-gray-100"
                 }`}
                 key={`${limitOption}${index}`}
                 onClick={() => {

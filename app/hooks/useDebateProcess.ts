@@ -1,19 +1,17 @@
 "use client";
 
-import { Arg } from "@/app/types/types";
+import { ApiError, Arg, getErrorMessage } from "@/app/types/types";
 import { ChangeEvent, useState, useEffect } from "react";
 import { useAtom, useSetAtom } from "jotai";
 import { debateAtom, processAtom } from "@/app/atoms/atoms";
 import { argIds } from "@/app/utils/values";
-import { useRef } from "react";
 
 export const useDebateProcess = () => {
   const [debate, setDebate] = useAtom(debateAtom);
   const { motion, limit } = debate;
-  const setProcess = useSetAtom(processAtom);
   const [sendable, setSendable] = useState<boolean>(false);
-  const abortControllerRef = useRef<AbortController | null>(null);
   const [formMessage, setFormMessage] = useState<string>("");
+  const setProcess = useSetAtom(processAtom);
 
   useEffect(() => {
     validate(motion);
@@ -51,7 +49,6 @@ export const useDebateProcess = () => {
   const runDebateProcess = async () => {
     setProcess("inProcess");
     setDebate({ ...debate, args: [] as Arg[] });
-    abortControllerRef.current = new AbortController();
 
     let newArgs: Arg[] = [] as Arg[];
 
@@ -73,11 +70,12 @@ export const useDebateProcess = () => {
           method: "POST",
           headers: requestHeaders,
           body: JSON.stringify(requestBody),
-          signal: abortControllerRef.current.signal,
         });
 
         if (!response.ok || !response.body) {
           setProcess("error");
+          const message = await getErrorMessage(response, argIds[i].id);
+          console.log(message);
           return;
         }
 
@@ -105,11 +103,12 @@ export const useDebateProcess = () => {
 
       setProcess("finish");
     } catch (e: unknown) {
-      if (e instanceof DOMException && e.name === "AbortError") {
-        setProcess("abort");
-      } else {
-        setProcess("error");
-      }
+      setProcess("error");
+      const message: ApiError = {
+        message: `unknown error occured: ${e}`,
+        status: 500,
+      };
+      console.log(message);
     }
   };
 
@@ -123,19 +122,12 @@ export const useDebateProcess = () => {
     setProcess("before");
   };
 
-  const cancelDebate = () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-  };
-
   return {
     editMotion,
     editLimit,
     runDebateProcess,
     initializeDebateProcess,
     initializeDebateProcessAfterError,
-    cancelDebate,
     sendable,
     formMessage,
   };

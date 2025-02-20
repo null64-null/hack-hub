@@ -12,11 +12,8 @@ import { useScrollByStream } from "@/app/hooks/useScroll";
 export default function ResultDisplay() {
   const { args, motion } = useAtomValue(debateAtom);
   const process = useAtomValue(processAtom);
-  const {
-    initializeDebateProcess,
-    initializeDebateProcessAfterError,
-    cancelDebate,
-  } = useDebateProcess();
+  const { initializeDebateProcess, initializeDebateProcessAfterError } =
+    useDebateProcess();
   const { scrollRef } = useScrollByStream(args);
 
   const style = (index: number) => {
@@ -68,9 +65,6 @@ export default function ResultDisplay() {
               <div className="text-xl font-bold text-primary">ディベート中</div>
               <div className="w-7 h-7 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
             </div>
-            <Button variant="outline" onClick={cancelDebate} className="w-60">
-              ディベートを中止
-            </Button>
           </div>
         )}
         {process === "finish" && (
@@ -87,11 +81,10 @@ export default function ResultDisplay() {
             </Button>
           </div>
         )}
-        {(process === "error" || process === "abort") && (
+        {process === "error" && (
           <div className="flex flex-col items-center">
             <div className="mb-5 text-xl font-bold text-red-500">
-              {process === "error" && "ディベートに失敗しました"}
-              {process === "abort" && "ディベートを中止しました"}
+              ディベートに失敗しました
             </div>
             <Button
               variant="outline"
