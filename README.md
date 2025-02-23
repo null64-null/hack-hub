@@ -20,13 +20,8 @@
 | 外部API | Groq API（LLM） |
 <br>
 
-## 構成図
-(製作中...)
-<br>
-
 ## 感想とコメント
-- 全部無料でできた！
-- 初めて世にアプリを公開できた！！
+- 全部無料でできた
 - GroqのLLMが無料なのにとても高速
 - hono.jsがCloudflare Workersと楽に連携するために作られたので、流石APIサーバーのデプロイが楽だった
 - Cloudflare Workers × Next.jsは、環境変数の設定が難しい...
